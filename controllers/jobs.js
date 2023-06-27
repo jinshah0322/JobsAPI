@@ -14,10 +14,8 @@ const createJob = async (req,res)=>{
 }
 
 const getJob = async (req,res)=>{
-    const {
-        user:userId,
-        params:{id:jobId}
-    } = req
+    const userId = req.user.userId
+    const jobId = req.params.id
     const job = await Job.findOne({
         _id:jobId,
         createdBy:userId
@@ -29,15 +27,13 @@ const getJob = async (req,res)=>{
 }
 
 const updateJob = async (req,res)=>{
-    const {
-        body:{company,position},
-        user:{userId},
-        params:{id:jobId}
-    } = req
+    const userId = req.user.userId
+    const jobId = req.params.id
+    const {company,position} = req.body
     if(company === '' || position === ''){
         throw new CustomAPIError("Company or position fields can't be empty",400)
     }
-    const job = await Job.findOneAndUpdate({_id:jobId,createdBy:userId},req.body,{new:true,runValidators:true})
+    const job = await Job.findOneAndUpdate({_id:jobId,createdBy:userId},{company,position},{new:true,runValidators:true})
     if(!job){
         throw new customAPIError(`No job with id ${jobId}`,404)
     }
@@ -45,10 +41,8 @@ const updateJob = async (req,res)=>{
 }
 
 const deleteJob = async (req,res)=>{
-    const {
-        user:userId,
-        params:{id:jobId}
-    } = req
+    const userId = req.user.userId
+    const jobId = req.params.id
     const job = await Job.findOneAndDelete({
         _id:jobId,
         createdBy:userId
