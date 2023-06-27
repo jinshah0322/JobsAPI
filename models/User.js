@@ -23,6 +23,10 @@ var userSchema = new mongoose.Schema({
         required:[true,"Please provide password"],
         min:6,
     },
+    isAdmin:{
+        type:Boolean,
+        default:false
+    }
 });
 
 userSchema.pre("save",async function(){

@@ -1,6 +1,5 @@
 const Job = require("../models/Job")
 const customAPIError = require("../errors/custom-error")
-const CustomAPIError = require("../errors/custom-error")
 
 const getAllJobs = async (req,res)=>{
     const jobs = await Job.find({createdBy:req.user.userId}).sort("createdAt")
@@ -31,7 +30,7 @@ const updateJob = async (req,res)=>{
     const jobId = req.params.id
     const {company,position} = req.body
     if(company === '' || position === ''){
-        throw new CustomAPIError("Company or position fields can't be empty",400)
+        throw new customAPIError("Company or position fields can't be empty",400)
     }
     const job = await Job.findOneAndUpdate({_id:jobId,createdBy:userId},{company,position},{new:true,runValidators:true})
     if(!job){
@@ -58,5 +57,5 @@ module.exports = {
     createJob,
     getJob,
     updateJob,
-    deleteJob
+    deleteJob,
 }
