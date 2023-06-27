@@ -6,6 +6,7 @@ const mongoose = require("mongoose")
 const connectDB = require("./db/connect")
 const authRoute = require("./routes/auth")
 const jobsRoute = require("./routes/jobs") 
+const authMiddleware = require("./middleware/authentication")
 
 // error handler
 const notFoundMiddleware = require('./middleware/not-found');
@@ -16,7 +17,7 @@ app.use(express.json());
 
 // routes
 app.use("/api/v1/auth",authRoute)
-app.use("/api/v1/jobs",jobsRoute)
+app.use("/api/v1/jobs",authMiddleware, jobsRoute)
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
