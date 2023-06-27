@@ -15,6 +15,7 @@ npm install && npm start
 
 - auth.js
 - jobs.js
+- jobsAdmin.js
 
 #### User Model
 
